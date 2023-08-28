@@ -1,3 +1,0 @@
-# Supercraftd Bros
-
-fighting game, wasn't my first choice...
