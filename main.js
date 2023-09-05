@@ -23,7 +23,7 @@ let platform={
 
 function setup(){
     createCanvas(720,640)
-    m = new BoxMan(100,100,5,100)
+    m = new BoxMan(100,0,5,100)
 }
 function draw(){
     background(255)
