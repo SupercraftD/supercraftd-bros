@@ -8,6 +8,16 @@ class GenericFighter{
         this.maxspeed=maxspeed
         this.gaccel=0.02
         this.g=0
+
+        this.currentAnim = 'idle'
+        this.busy=false
+
+        this.anims = {
+            'idle':[
+                {}
+            ]
+        }
+
     }
     draw(){
         this.x+=this.velX
@@ -34,7 +44,7 @@ class GenericFighter{
         if (this.onFloor){
             this.g = 0
             this.velY = 0
-            if (keyIsDown(" ".charCodeAt(0))){
+            if (keyIsDown(" ".charCodeAt(0)) || keyIsDown(UP_ARROW)){
                 this.velY -= 10
             }
         }else{
