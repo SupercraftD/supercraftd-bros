@@ -1,18 +1,20 @@
-console.stdlog = console.log.bind(console);
-console.logs = [];
-console.log = function(){
-    console.logs.push(Array.from(arguments));
-    alert(console.logs[console.logs.length-1])
-    console.stdlog.apply(console, arguments);
-}
-console.error = function(){
-  console.logs.push(Array.from(arguments));
-  alert(console.logs[console.logs.length-1])
-  console.stdlog.apply(console, arguments);
-}
+/*
+bc=()=>{
+    console.stdlog = console.log.bind(console);
+    console.logs = [];
+    console.log = function(){
+        console.logs.push(Array.from(arguments));
+        alert(console.logs[console.logs.length-1])
+        console.stdlog.apply(console, arguments);
+    }
+    console.error = function(){
+      console.logs.push(Array.from(arguments));
+      alert(console.logs[console.logs.length-1])
+      console.stdlog.apply(console, arguments);
+}};bc()
+*/
 
-
-let m 
+let c
 
 let platform={
     x:150,
@@ -23,11 +25,13 @@ let platform={
 
 function setup(){
     createCanvas(720,640)
-    m = new BoxMan(100,0,5,100)
+    noSmooth()
+
+    c=new Criminal(100,0)
 }
 function draw(){
     background(255)
-    m.draw()
     fill('black')
+    c.draw()
     rect(platform.x,platform.y,platform.w,platform.h)
 }

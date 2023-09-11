@@ -1,56 +1,112 @@
 class GenericFighter{
-    constructor(x,y,accel,maxspeed){
+    constructor(x,y,accel,maxspeed,mass){
         this.x=x
         this.y=y
         this.velX = 0
         this.velY = 0
         this.accel=accel
         this.maxspeed=maxspeed
-        this.gaccel=0.02
+        this.gaccel=mass
         this.g=0
 
         this.currentAnim = 'idle'
+        this.currentFrame = 0
         this.busy=false
 
-        this.anims = {
-            'idle':[
-                {}
-            ]
-        }
+        this.anims = {}
+
+        this.facing = 'right'
+
+        this.atkkeycode = ','.charCodeAt(0)
+        this.leftkeycode = LEFT_ARROW
+        this.rightkeycode = RIGHT_ARROW
+        this.jumpkeycode = UP_ARROW
+
+        this.cimg
 
     }
     draw(){
         this.x+=this.velX
         this.y+=this.velY
+        this.onFloor = collideRectRect(this.x+this.hitboxOffset.x,this.y+this.hitboxOffset.y+this.hitboxOffset.h-1,this.hitboxOffset.w,1,platform.x,platform.y,platform.w,platform.h)
+        if (this.onFloor){
+
+            this.y = platform.y-this.hitboxOffset.h-this.hitboxOffset.y
+        }
 
         if (this.velX<0){this.velX+=this.accel}
         if (this.velX>0){this.velX-=this.accel}
         //if (this.velY<0){this.velY+=this.accel}
         //if (this.velY>0){this.velY-=this.accel}
 
-        if (keyIsDown(LEFT_ARROW)){
+        if (keyIsDown(this.leftkeycode)){
+            this.facing = 'left'
             if (this.velX > -this.maxspeed){
                 this.velX -= this.accel
             }
+            if ((!this.busy) && this.currentAnim != 'run'){
+
+            }
         }
-        if (keyIsDown(RIGHT_ARROW)){
+        if (keyIsDown(this.rightkeycode)){
+            this.facing = 'right'
             if (this.velX<this.maxspeed){
                 this.velX+=this.accel
             }
         }
 
-        this.onFloor = collideRectRect(this.x,this.y+this.h-1,this.w,5,platform.x,platform.y,platform.w,platform.h)
-        rect(this.x,this.y+this.h-1,this.w,1)
+        //rect(this.x,this.y+this.h-1,this.w,1)
         if (this.onFloor){
             this.g = 0
             this.velY = 0
-            if (keyIsDown(" ".charCodeAt(0)) || keyIsDown(UP_ARROW)){
+            if (keyIsDown(this.jumpkeycode)){
                 this.velY -= 10
             }
         }else{
             this.g += this.gaccel
             this.velY += this.g
         }
+
+        //comma attack
+        if (keyIsDown(this.atkkeycode)){
+            if (keyIsDown(this.leftkeycode) || keyIsDown(this.rightkeycode)){
+                //horizontal forward attack
+
+                this.currentAnim = 'forwardattack'
+                this.busy = true
+            }
+            else
+            {
+                //neutral
+            }
+        }
+        this.frame()
         
+    }
+    animOver(){
+        this.currentFrame=0
+        this.currentAnim = 'idle'
+        this.busy = false
+    }
+    frame(){
+        if (this.currentFrame in this.anims[this.currentAnim]){
+            this.f = this.anims[this.currentAnim][this.currentFrame]
+            this.cimg = this.f.img
+            if ('callback' in this.f){
+                this.f.callback()
+            }    
+        }
+
+        if (this.facing=='right'){
+            image(frameImages[this.cimg],this.x,this.y,this.w,this.h)    
+        }else{
+            push()
+            translate(this.x+this.w,this.y)
+            scale(-1,1)
+            image(frameImages[this.cimg],this.flipOffset,0,this.w,this.h)
+            pop()
+        }
+        this.currentFrame+=1
+
     }
 }
