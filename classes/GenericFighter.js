@@ -17,15 +17,20 @@ class GenericFighter{
 
         this.facing = 'right'
 
-        this.atkkeycode = ','.charCodeAt(0)
+        this.atkkeycode = 188 //comma
         this.leftkeycode = LEFT_ARROW
         this.rightkeycode = RIGHT_ARROW
         this.jumpkeycode = UP_ARROW
 
         this.cimg
 
+        this.atkheldlast = false
+        this.latk = 0
+        this.cf = 0
     }
     draw(){
+        this.cf+=1
+
         this.x+=this.velX
         this.y+=this.velY
         this.onFloor = collideRectRect(this.x+this.hitboxOffset.x,this.y+this.hitboxOffset.y+this.hitboxOffset.h-1,this.hitboxOffset.w,1,platform.x,platform.y,platform.w,platform.h)
@@ -69,21 +74,34 @@ class GenericFighter{
 
         //comma attack
         if (keyIsDown(this.atkkeycode)){
-            if (keyIsDown(this.leftkeycode) || keyIsDown(this.rightkeycode)){
-                //horizontal forward attack
-
-                this.currentAnim = 'forwardattack'
-                this.busy = true
+            if (!this.atkheldlast){
+                this.atkheldlast = true
+                if (keyIsDown(this.leftkeycode) || keyIsDown(this.rightkeycode)){
+                    //horizontal forward attack
+                    if (!this.busy && this.cf > this.latk+5){
+                        console.log(this.cf,this.latk)
+                        this.currentAnim = 'forwardattack'
+                        this.busy = true
+                        this.currentFrame=0
+                    }
+                }
+                else
+                {
+                    //neutral
+                }
+    
             }
-            else
-            {
-                //neutral
-            }
+        }else{
+            this.atkheldlast = false
         }
         this.frame()
         
     }
     animOver(){
+        if (this.currentAnim == 'forwardattack'){
+            this.latk = this.cf
+        }
+
         this.currentFrame=0
         this.currentAnim = 'idle'
         this.busy = false

@@ -19,7 +19,12 @@ class Criminal extends GenericFighter{
                 15:{img:'crimidle2'},
                 30:{img:'crimidle3'},
                 45:{img:'crimidle4',callback:()=>{this.animOver()}},
-
+            },
+            'forwardattack':{
+                0:{img:'crimfa1'},
+                2:{img:'crimfa2'},
+                6:{img:'crimfa3'},
+                10:{img:'crimfa4',callback:()=>{this.animOver()}},
             }
         }
     }
