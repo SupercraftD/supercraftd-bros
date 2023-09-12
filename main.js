@@ -33,5 +33,6 @@ function draw(){
     background(255)
     fill('black')
     c.draw()
+    fill('black')
     rect(platform.x,platform.y,platform.w,platform.h)
 }

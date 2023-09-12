@@ -21,10 +21,75 @@ class Criminal extends GenericFighter{
                 45:{img:'crimidle4',callback:()=>{this.animOver()}},
             },
             'forwardattack':{
-                0:{img:'crimfa1'},
-                2:{img:'crimfa2'},
-                6:{img:'crimfa3'},
-                10:{img:'crimfa4',callback:()=>{this.animOver()}},
+                0:{img:'crimfa1', callback:()=>{
+                    let righthb = {
+                        x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
+                        y:this.y+this.hitboxOffset.y+20,
+                        w:20,
+                        h:20
+                    }
+                    let lefthb = {
+                        x:this.x+this.hitboxOffset.x-this.hitboxOffset.w-5,
+                        y:this.y+this.hitboxOffset.y+20,
+                        w:20,
+                        h:20
+                    }
+
+                    this.atkHitbox(this.facing=='right'?righthb:lefthb)
+                }},
+                8:{img:'crimfa2', callback:()=>{
+                    let righthb = {
+                        x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
+                        y:this.y+5,
+                        w:20,
+                        h:40
+                    }
+                    let lefthb = {
+                        x:this.x+this.hitboxOffset.x-this.hitboxOffset.w,
+                        y:this.y+5,
+                        w:20,
+                        h:40
+                    }
+
+                    this.atkHitbox(this.facing=='right'?righthb:lefthb)
+
+                }},
+                16:{img:'crimfa3', callback:()=>{
+                    let righthb = {
+                        x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
+                        y:this.y+this.hitboxOffset.y+(this.hitboxOffset.h/2)-5,
+                        w:40,
+                        h:20
+                    }
+                    let lefthb = {
+                        x:this.x+this.hitboxOffset.x-this.hitboxOffset.w-30,
+                        y:this.y+this.hitboxOffset.y+(this.hitboxOffset.h/2)-5,
+                        w:40,
+                        h:20
+                    }
+
+                    this.atkHitbox(this.facing=='right'?righthb:lefthb)
+                }},
+                24:{img:'crimfa4',callback:()=>{
+
+                    let righthb = {
+                        x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
+                        y:this.y+this.hitboxOffset.y+this.hitboxOffset.h,
+                        w:20,
+                        h:40
+                    }
+                    let lefthb = {
+                        x:this.x+this.hitboxOffset.x-this.hitboxOffset.w+10,
+                        y:this.y+this.hitboxOffset.y+this.hitboxOffset.h,
+                        w:20,
+                        h:40
+                    }
+
+                    this.atkHitbox(this.facing=='right'?righthb:lefthb)
+
+                    
+                    this.animOver()
+                }},
             }
         }
     }

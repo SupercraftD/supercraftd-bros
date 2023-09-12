@@ -127,4 +127,8 @@ class GenericFighter{
         this.currentFrame+=1
 
     }
+    atkHitbox(hitbox){
+        //fill('red')
+        //rect(hitbox.x,hitbox.y,hitbox.w,hitbox.h)
+    }
 }
