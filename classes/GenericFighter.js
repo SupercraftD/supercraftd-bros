@@ -47,18 +47,22 @@ class GenericFighter{
         //if (this.velY>0){this.velY-=this.accel}
 
         if (keyIsDown(this.leftkeycode)){
-            this.facing = 'left'
-            if (this.velX > -this.maxspeed){
-                this.velX -= this.accel
-            }
-            if ((!this.busy) && this.currentAnim != 'run'){
-
+            if (!this.busy){
+                this.facing = 'left'
+                if (this.velX > -this.maxspeed){
+                    this.velX -= this.accel
+                }
+                if (this.currentAnim != 'run'){
+                    //run animation... when duncan finishes it
+                }
             }
         }
         if (keyIsDown(this.rightkeycode)){
-            this.facing = 'right'
-            if (this.velX<this.maxspeed){
-                this.velX+=this.accel
+            if (!this.busy){
+                this.facing = 'right'
+                if (this.velX<this.maxspeed){
+                    this.velX+=this.accel
+                }    
             }
         }
 
@@ -67,7 +71,9 @@ class GenericFighter{
             this.g = 0
             this.velY = 0
             if (keyIsDown(this.jumpkeycode)){
-                this.velY -= 10
+                if (!this.busy){
+                    this.velY -= 10
+                }
             }
         }else{
             this.g += this.gaccel
