@@ -14,7 +14,8 @@ bc=()=>{
 }};bc()
 */
 
-let c
+let p1
+let p2
 
 let platform={
     x:150,
@@ -27,12 +28,14 @@ function setup(){
     createCanvas(720,640)
     noSmooth()
 
-    c=new Criminal(100,0)
+    p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1)
+    p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2)
 }
 function draw(){
     background(255)
     fill('black')
-    c.draw()
+    p1.draw()
+    p2.draw()
     fill('black')
     rect(platform.x,platform.y,platform.w,platform.h)
 }

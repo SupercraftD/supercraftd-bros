@@ -1,5 +1,7 @@
 class GenericFighter{
-    constructor(x,y,accel,maxspeed,mass){
+    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber){
+        this.pnumber=pnumber
+
         this.x=x
         this.y=y
         this.velX = 0
@@ -17,10 +19,10 @@ class GenericFighter{
 
         this.facing = 'right'
 
-        this.atkkeycode = 188 //comma
-        this.leftkeycode = LEFT_ARROW
-        this.rightkeycode = RIGHT_ARROW
-        this.jumpkeycode = UP_ARROW
+        this.atkkeycode = atkkeycode
+        this.leftkeycode = leftkeycode
+        this.rightkeycode = rightkeycode
+        this.jumpkeycode = jumpkeycode
 
         this.cimg
 
@@ -128,7 +130,22 @@ class GenericFighter{
 
     }
     atkHitbox(hitbox){
-        //fill('red')
-        //rect(hitbox.x,hitbox.y,hitbox.w,hitbox.h)
+        fill('red')
+        rect(hitbox.x,hitbox.y,hitbox.w,hitbox.h)
+        let op
+        if (this.pnumber==1){
+            op=p2
+        }else{
+            op=p1
+        }
+        if (collideRectRect(hitbox.x,hitbox.y,hitbox.w,hitbox.h,op.x+op.hitboxOffset.x,op.y+op.hitboxOffset.y,op.hitboxOffset.w,op.hitboxOffset.h)){
+            console.log(op,'hit')
+            if (this.x <= op.x){
+                op.velX += 20
+            }else{
+                op.velX -= 20
+            }
+            op.velY -= 5
+        }
     }
 }
