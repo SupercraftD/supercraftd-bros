@@ -15,7 +15,7 @@ class Criminal extends GenericFighter{
 
         this.anims = {
             'idle':{
-                0:{img:'crimidle1'},
+                0:{img:'crimidle1',callback:()=>{this.busy = false}},
                 15:{img:'crimidle2'},
                 30:{img:'crimidle3'},
                 45:{img:'crimidle4',callback:()=>{this.animOver()}},
@@ -88,8 +88,10 @@ class Criminal extends GenericFighter{
                     this.atkHitbox(this.facing=='right'?righthb:lefthb)
 
                     
-                    this.animOver()
                 }},
+                32:{img:'crimfa4',callback:()=>{
+                    this.animOver()
+                }}
             }
         }
     }

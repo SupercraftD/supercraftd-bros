@@ -110,9 +110,8 @@ class GenericFighter{
             this.latk = this.cf
         }
 
-        this.currentFrame=0
+        this.currentFrame=-1
         this.currentAnim = 'idle'
-        this.busy = false
     }
     frame(){
         if (this.currentFrame in this.anims[this.currentAnim]){
@@ -136,8 +135,6 @@ class GenericFighter{
 
     }
     atkHitbox(hitbox){
-        fill('red')
-        rect(hitbox.x,hitbox.y,hitbox.w,hitbox.h)
         let op
         if (this.pnumber==1){
             op=p2
