@@ -2,6 +2,8 @@ class GenericFighter{
     constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber){
         this.pnumber=pnumber
 
+        this.kbmultiplier = 20
+
         this.x=x
         this.y=y
         this.velX = 0
@@ -31,18 +33,36 @@ class GenericFighter{
         this.cf = 0
     }
     draw(){
+        fill('black')
+        textSize(32)
+        if (this.pnumber == 1){
+            text('Player 1: '+(this.kbmultiplier-20).toString(),100,100)
+        }else{
+            text('Player 2: '+(this.kbmultiplier-20).toString(),400,100)
+        }
         this.cf+=1
 
         this.x+=this.velX
         this.y+=this.velY
+
         this.onFloor = collideRectRect(this.x+this.hitboxOffset.x,this.y+this.hitboxOffset.y+this.hitboxOffset.h-1,this.hitboxOffset.w,1,platform.x,platform.y,platform.w,platform.h)
         if (this.onFloor){
 
             this.y = platform.y-this.hitboxOffset.h-this.hitboxOffset.y
         }
 
-        if (this.velX<0){this.velX+=this.accel}
-        if (this.velX>0){this.velX-=this.accel}
+        if (this.velX<0){
+            this.velX+=this.accel
+            if (this.velX>0){
+                this.velX=0
+            }
+        }
+        if (this.velX>0){
+            this.velX-=this.accel
+            if (this.velX < 0){
+                this.velX = 0
+            }
+        }
         //if (this.velY<0){this.velY+=this.accel}
         //if (this.velY>0){this.velY-=this.accel}
 
@@ -143,12 +163,14 @@ class GenericFighter{
         }
         if (collideRectRect(hitbox.x,hitbox.y,hitbox.w,hitbox.h,op.x+op.hitboxOffset.x,op.y+op.hitboxOffset.y,op.hitboxOffset.w,op.hitboxOffset.h)){
             console.log(op,'hit')
+            op.kbmultiplier += 9
             if (this.x <= op.x){
-                op.velX += 20
+                op.velX += 20 * (op.kbmultiplier/100)
             }else{
-                op.velX -= 20
+                op.velX -= 20 * (op.kbmultiplier/100)
             }
-            op.velY -= 5
+            op.velY -= 5 * (op.kbmultiplier/100)
+
         }
     }
 }
