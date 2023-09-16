@@ -1,8 +1,10 @@
 class GenericFighter{
-    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber){
+    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber,jumpheight){
         this.pnumber=pnumber
 
         this.kbmultiplier = 20
+
+        this.jumpheight = jumpheight
 
         this.x=x
         this.y=y
@@ -16,6 +18,8 @@ class GenericFighter{
         this.currentAnim = 'idle'
         this.currentFrame = 0
         this.busy=false
+
+        this.dbdelay = 0
 
         this.anims = {}
 
@@ -31,6 +35,11 @@ class GenericFighter{
         this.atkheldlast = false
         this.latk = 0
         this.cf = 0
+
+        this.doublejumps = 0
+        this.maxdoublejumps = 1
+    
+        this.jumpheldlast = false
     }
     draw(){
         fill('black')
@@ -88,16 +97,35 @@ class GenericFighter{
 
         //rect(this.x,this.y+this.h-1,this.w,1)
         if (this.onFloor){
+            this.doublejumps = 0
             this.g = 0
             this.velY = 0
             if (keyIsDown(this.jumpkeycode)){
-                if (!this.busy){
-                    this.velY -= 10
+                if (!this.busy && !this.jumpheldlast){
+                    this.velY -= this.jumpheight
                 }
+                this.jumpheldlast=true
+            }else{
+                this.jumpheldlast=false
             }
         }else{
             this.g += this.gaccel
             this.velY += this.g
+
+            if (keyIsDown(this.jumpkeycode)){
+                if (!this.busy && !this.jumpheldlast){
+                    if (this.doublejumps < this.maxdoublejumps){
+                        this.g=0
+                        this.velY=0
+                        this.doublejumps += 1
+                        this.velY -= this.jumpheight
+                    }
+                }
+                this.jumpheldlast=true
+
+            }else{
+                this.jumpheldlast=false
+            }
         }
 
         //comma attack
@@ -106,8 +134,7 @@ class GenericFighter{
                 this.atkheldlast = true
                 if (keyIsDown(this.leftkeycode) || keyIsDown(this.rightkeycode)){
                     //horizontal forward attack
-                    if (!this.busy && this.cf > this.latk+5){
-                        console.log(this.cf,this.latk)
+                    if (!this.busy && this.cf > this.latk+this.dbdelay){
                         this.currentAnim = 'forwardattack'
                         this.busy = true
                         this.currentFrame=0
@@ -115,7 +142,11 @@ class GenericFighter{
                 }
                 else
                 {
-                    //neutral
+                    if (!this.busy && this.cf > this.latk+this.dbdelay){
+                        this.currentAnim = 'neutralattack'
+                        this.busy = true
+                        this.currentFrame = 0
+                    }
                 }
     
             }
@@ -126,7 +157,7 @@ class GenericFighter{
         
     }
     animOver(){
-        if (this.currentAnim == 'forwardattack'){
+        if (this.busy){
             this.latk = this.cf
         }
 
@@ -151,10 +182,17 @@ class GenericFighter{
             image(frameImages[this.cimg],this.flipOffset,0,this.w,this.h)
             pop()
         }
+        //hitbox debug only
+        // if ('callback' in this.f){
+        //     this.f.callback()
+        // }
+
         this.currentFrame+=1
 
     }
     atkHitbox(hitbox){
+        // fill('red')
+        // rect(hitbox.x,hitbox.y,hitbox.w,hitbox.h)
         let op
         if (this.pnumber==1){
             op=p2
@@ -162,8 +200,7 @@ class GenericFighter{
             op=p1
         }
         if (collideRectRect(hitbox.x,hitbox.y,hitbox.w,hitbox.h,op.x+op.hitboxOffset.x,op.y+op.hitboxOffset.y,op.hitboxOffset.w,op.hitboxOffset.h)){
-            console.log(op,'hit')
-            op.kbmultiplier += 9
+            op.kbmultiplier += hitbox.kb
             if (this.x <= op.x){
                 op.velX += 20 * (op.kbmultiplier/100)
             }else{
