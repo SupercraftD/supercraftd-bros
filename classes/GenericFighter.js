@@ -76,7 +76,7 @@ class GenericFighter{
                 if (window.pn==1){
                     i=window.inputs2
                     console.log(this.pnumber,i)
-                    this.inputs = 1
+                    this.inputs = i
                 }else{
                     i=window.inputs1
                     this.inputs = i
@@ -86,9 +86,6 @@ class GenericFighter{
     }
     draw(){
         this.handleInputs()
-        if (this.pnumber == 2){
-            this.inputs = window.inputs2
-        }
         fill('black')
         textSize(32)
         if (this.pnumber == 1){
@@ -246,7 +243,30 @@ class GenericFighter{
             this.atkheldlast = false
         }
         this.frame()
-        
+
+        if (this.pnumber == window.pn){
+            //client
+            if (this.pnumber==1){
+                window.pos1 = {x:this.x,y:this.y}
+            }else{
+                window.pos2 = {x:this.x,y:this.y}
+            }
+        }else{
+            //other player
+            if (this.pnumber == 1){
+                this.x = window.pos1.x
+                this.y = window.pos1.y
+            }else{
+                this.x = window.pos2.x
+                this.y = window.pos2.y
+            }
+        }
+        if (this.pnumber == 1){
+            console.log('2: ',window.pos2.x,window.pos2.y)
+        }else{
+            console.log('1: ',window.pos1.x,window.pos1.y)
+        }
+
     }
     animOver(){
         if (this.busy){

@@ -52,6 +52,7 @@ window.joinServer = function(){
                 atk:false,
                 lastkey:0
             },
+            p1Pos:{x:0,y:0},
             p2Available:true,
             p2char:'',
             p2Inputs:{
@@ -61,7 +62,8 @@ window.joinServer = function(){
                 down:false,
                 atk:false,
                 lastkey:0
-            }
+            },
+            p2Pos:{x:0,y:0}
         }
         set(ref(db,'servers/'+window.connectedServer),nServerData)
         window.pn = 1
@@ -71,7 +73,10 @@ window.joinServer = function(){
         window.serverData = s.val()
     })
     window.inputs1 = window.serverData.p1Inputs
+    window.pos1 = window.serverData.p1Pos
     window.inputs2 = window.serverData.p2Inputs
+    window.pos2 = window.serverData.p2Pos
+
     sLoop()
 }
 
@@ -79,9 +84,13 @@ function sLoop(){
     console.log(window.inputs1,window.inputs2)
     if (window.pn==1){
         set(ref(db,'servers/'+window.connectedServer+'/p1Inputs'),window.inputs1)
+        set(ref(db,'servers/'+window.connectedServer+'/p1Pos'),window.pos1)
+        window.pos2 = window.serverData.p2Pos
         window.inputs2 = window.serverData.p2Inputs
     }else{
         set(ref(db,'servers/'+window.connectedServer+'/p2Inputs'),window.inputs2)
+        set(ref(db,'servers/'+window.connectedServer+'/p2Pos'),window.pos2)
+        window.pos1 = window.serverData.p1Pos
         window.inputs1 = window.serverData.p1Inputs
     }
 
