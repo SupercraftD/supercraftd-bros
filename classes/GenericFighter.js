@@ -211,7 +211,7 @@ class GenericFighter{
                 }else if ((vDown) && (vRecent)){
                     //up or down is held down and is most recent
                     if (!this.busy && this.cf > this.latk+this.dbdelay){
-                        if (keyIsDown(this.jumpkeycode)){
+                        if (this.inputs.jump){
                             //up attack
                             if (!this.onFloor){
                                 this.currentAnim = 'upattack'
