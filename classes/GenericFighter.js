@@ -43,10 +43,51 @@ class GenericFighter{
         this.maxdoublejumps = 1
     
         this.jumpheldlast = false
+
+        this.inputs={}
+    }
+    handleInputs(){
+        let i=this.inputs
+        if (window.mode=='local'){
+            i.left = keyIsDown(this.leftkeycode)
+            i.right = keyIsDown(this.rightkeycode)
+            i.jump = keyIsDown(this.jumpkeycode)
+            i.down = keyIsDown(this.downkeycode)
+            i.atk = keyIsDown(this.atkkeycode)
+            if (keyCode != this.atkkeycode){
+                i.lastkey = keyCode
+            }
+        }else{
+            if (this.pnumber == window.pn){
+                i.left = keyIsDown(this.leftkeycode)
+                i.right = keyIsDown(this.rightkeycode)
+                i.jump = keyIsDown(this.jumpkeycode)
+                i.down = keyIsDown(this.downkeycode)
+                i.atk = keyIsDown(this.atkkeycode)
+                if (keyCode != this.atkkeycode){
+                    i.lastkey = keyCode
+                }
+                if (window.pn==1){
+                    window.inputs1 = i
+                }else{
+                    window.inputs2 = i
+                }
+            }else{
+                if (window.pn==1){
+                    i=window.inputs2
+                    console.log(this.pnumber,i)
+                    this.inputs = 1
+                }else{
+                    i=window.inputs1
+                    this.inputs = i
+                }
+            }
+        }
     }
     draw(){
-        if (keyCode != this.atkkeycode){
-            this.lastkey = keyCode
+        this.handleInputs()
+        if (this.pnumber == 2){
+            this.inputs = window.inputs2
         }
         fill('black')
         textSize(32)
@@ -90,7 +131,7 @@ class GenericFighter{
         //if (this.velY<0){this.velY+=this.accel}
         //if (this.velY>0){this.velY-=this.accel}
 
-        if (keyIsDown(this.leftkeycode)){
+        if (this.inputs.left){
             if (!this.busy){
                 this.facing = 'left'
                 if (this.velX > -this.maxspeed){
@@ -101,7 +142,7 @@ class GenericFighter{
                 }
             }
         }
-        if (keyIsDown(this.rightkeycode)){
+        if (this.inputs.right){
             if (!this.busy){
                 this.facing = 'right'
                 if (this.velX<this.maxspeed){
@@ -115,7 +156,7 @@ class GenericFighter{
             this.doublejumps = 0
             this.g = 0
             this.velY = 0
-            if (keyIsDown(this.jumpkeycode)){
+            if (this.inputs.jump){
                 if (!this.busy && !this.jumpheldlast){
                     this.velY -= this.jumpheight
                 }
@@ -127,7 +168,7 @@ class GenericFighter{
             this.g += this.gaccel
             this.velY += this.g
 
-            if (keyIsDown(this.jumpkeycode)){
+            if (this.inputs.jump){
                 if (!this.busy && !this.jumpheldlast){
                     if (this.doublejumps < this.maxdoublejumps){
                         this.g=0
@@ -144,15 +185,15 @@ class GenericFighter{
         }
 
         //comma attack
-        if (keyIsDown(this.atkkeycode)){
+        if (this.inputs.atk){
             if (!this.atkheldlast){
                 this.atkheldlast = true
                 //initiate attack
 
-                let hDown = keyIsDown(this.leftkeycode) || keyIsDown(this.rightkeycode)
-                let hRecent = this.lastkey == this.leftkeycode || this.lastkey == this.rightkeycode
-                let vDown = keyIsDown(this.jumpkeycode) || keyIsDown(this.downkeycode)
-                let vRecent = this.lastkey == this.jumpkeycode || this.lastkey == this.downkeycode
+                let hDown = this.inputs.left || this.inputs.right
+                let hRecent = this.inputs.lastkey == this.leftkeycode || this.inputs.lastkey == this.rightkeycode
+                let vDown = this.inputs.jump || this.inputs.down
+                let vRecent = this.inputs.lastkey == this.jumpkeycode || this.inputs.lastkey == this.downkeycode
 
                 if (hDown && !vDown){
                     hRecent = true
