@@ -1,5 +1,5 @@
 class GenericFighter{
-    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber,jumpheight){
+    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber,jumpheight,downkeycode){
         this.pnumber=pnumber
 
         this.kbmultiplier = 20
@@ -29,6 +29,9 @@ class GenericFighter{
         this.leftkeycode = leftkeycode
         this.rightkeycode = rightkeycode
         this.jumpkeycode = jumpkeycode
+        this.downkeycode = downkeycode
+
+        this.lastkey
 
         this.cimg
 
@@ -42,6 +45,9 @@ class GenericFighter{
         this.jumpheldlast = false
     }
     draw(){
+        if (keyCode != this.atkkeycode){
+            this.lastkey = keyCode
+        }
         fill('black')
         textSize(32)
         if (this.pnumber == 1){
@@ -53,11 +59,20 @@ class GenericFighter{
 
         this.x+=this.velX
         this.y+=this.velY
-
-        this.onFloor = collideRectRect(this.x+this.hitboxOffset.x,this.y+this.hitboxOffset.y+this.hitboxOffset.h-1,this.hitboxOffset.w,1,platform.x,platform.y,platform.w,platform.h)
+        let collidingPlat
+        for (let platform of platforms){
+            this.onFloor = collideRectRect(this.x+this.hitboxOffset.x,this.y+this.hitboxOffset.y+this.hitboxOffset.h-1,this.hitboxOffset.w,1,platform.x,platform.y,platform.w,platform.h)
+            if (this.onFloor){
+                if (this.velY<0){
+                    this.onFloor = false
+                    break
+                }
+                collidingPlat = platform
+                break
+            }
+        }
         if (this.onFloor){
-
-            this.y = platform.y-this.hitboxOffset.h-this.hitboxOffset.y
+            this.y = collidingPlat.y-this.hitboxOffset.h-this.hitboxOffset.y
         }
 
         if (this.velX<0){
@@ -132,14 +147,50 @@ class GenericFighter{
         if (keyIsDown(this.atkkeycode)){
             if (!this.atkheldlast){
                 this.atkheldlast = true
-                if (keyIsDown(this.leftkeycode) || keyIsDown(this.rightkeycode)){
+                //initiate attack
+
+                let hDown = keyIsDown(this.leftkeycode) || keyIsDown(this.rightkeycode)
+                let hRecent = this.lastkey == this.leftkeycode || this.lastkey == this.rightkeycode
+                let vDown = keyIsDown(this.jumpkeycode) || keyIsDown(this.downkeycode)
+                let vRecent = this.lastkey == this.jumpkeycode || this.lastkey == this.downkeycode
+
+                if (hDown && !vDown){
+                    hRecent = true
+                    vRecent = false
+                }else if (vDown && !hDown){
+                    hRecent = false
+                    vRecent = true
+                }
+
+                if ((hDown) && (hRecent)){
+                    //left or right is held down and is most recent
                     //horizontal forward attack
                     if (!this.busy && this.cf > this.latk+this.dbdelay){
                         this.currentAnim = 'forwardattack'
                         this.busy = true
                         this.currentFrame=0
                     }
-                }
+                }else if ((vDown) && (vRecent)){
+                    //up or down is held down and is most recent
+                    if (!this.busy && this.cf > this.latk+this.dbdelay){
+                        if (keyIsDown(this.jumpkeycode)){
+                            //up attack
+                            if (!this.onFloor){
+                                this.currentAnim = 'upattack'
+                            }else{
+                                this.currentAnim = 'neutralattack'
+                            }
+                        }else{
+                            if (!this.onFloor){
+                                this.currentAnim = 'downattack'
+                            }else{
+                                this.currentAnim = 'neutralattack'
+                            }
+                        }
+                        this.busy = true
+                        this.currentFrame = 0
+                    }
+                } 
                 else
                 {
                     if (!this.busy && this.cf > this.latk+this.dbdelay){
@@ -183,16 +234,16 @@ class GenericFighter{
             pop()
         }
         //hitbox debug only
-        // if ('callback' in this.f){
-        //     this.f.callback()
-        // }
+        if ('callback' in this.f && this.f.repeatCall){
+            this.f.callback()
+        }
 
         this.currentFrame+=1
 
     }
     atkHitbox(hitbox){
-        // fill('red')
-        // rect(hitbox.x,hitbox.y,hitbox.w,hitbox.h)
+        //fill('red')
+        //rect(hitbox.x,hitbox.y,hitbox.w,hitbox.h)
         let op
         if (this.pnumber==1){
             op=p2
