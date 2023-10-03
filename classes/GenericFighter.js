@@ -57,6 +57,7 @@ class GenericFighter{
             if (keyCode != this.atkkeycode){
                 i.lastkey = keyCode
             }
+            this.inputs = i
         }else{
             if (this.pnumber == window.pn){
                 i.left = keyIsDown(this.leftkeycode)
@@ -243,30 +244,31 @@ class GenericFighter{
             this.atkheldlast = false
         }
         this.frame()
-
-        if (this.pnumber == window.pn){
-            //client
-            if (this.pnumber==1){
-                window.pos1 = {x:this.x,y:this.y}
+        if (window.mode == 'online'){
+            if (this.pnumber == window.pn){
+                //client
+                if (this.pnumber==1){
+                    window.pos1 = {x:this.x,y:this.y}
+                }else{
+                    window.pos2 = {x:this.x,y:this.y}
+                }
             }else{
-                window.pos2 = {x:this.x,y:this.y}
+                //other player
+                if (this.pnumber == 1){
+                    this.x = window.pos1.x
+                    this.y = window.pos1.y
+                }else{
+                    this.x = window.pos2.x
+                    this.y = window.pos2.y
+                }
             }
-        }else{
-            //other player
             if (this.pnumber == 1){
-                this.x = window.pos1.x
-                this.y = window.pos1.y
+                console.log('2: ',window.pos2.x,window.pos2.y)
             }else{
-                this.x = window.pos2.x
-                this.y = window.pos2.y
+                console.log('1: ',window.pos1.x,window.pos1.y)
             }
+    
         }
-        if (this.pnumber == 1){
-            console.log('2: ',window.pos2.x,window.pos2.y)
-        }else{
-            console.log('1: ',window.pos1.x,window.pos1.y)
-        }
-
     }
     animOver(){
         if (this.busy){
