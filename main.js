@@ -105,4 +105,22 @@ function keyPressed(){
         window.connectedServer = keyCode
         window.joinServer()
     }
+    if (key == 'r'){
+        //hard and unsafe reset
+        reset()
+    }
+}
+
+function reset(){
+    p1 = undefined
+    p2 = undefined
+    window.mode = undefined
+    window.connectedServer = undefined
+    window.serverData = undefined
+    window.pn = undefined
+    window.joined = false
+    window.inputs1 = undefined
+    window.pos1 = undefined
+    window.inputs2 = undefined
+    window.pos2= undefined
 }

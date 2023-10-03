@@ -21,13 +21,14 @@ class Criminal extends GenericFighter{
                 45:{img:'crimidle4',callback:()=>{this.animOver()}},
             },
             'forwardattack':{
-                0:{img:'crimfa1', callback:()=>{
+                xdriftamount:3,
+                0:{img:'crimfa1',repeatCall:true, callback:()=>{
                     let righthb = {
                         x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
                         y:this.y+this.hitboxOffset.y+20,
                         w:20,
                         h:20,
-                        kb:9
+                        kb:6
 
                     }
                     let lefthb = {
@@ -35,19 +36,20 @@ class Criminal extends GenericFighter{
                         y:this.y+this.hitboxOffset.y+20,
                         w:20,
                         h:20,
-                        kb:9
+                        kb:6
 
                     }
 
                     this.atkHitbox(this.facing=='right'?righthb:lefthb)
+                    this.velX += this.facing=='right'?this.anims['forwardattack'].xdriftamount:-this.anims['forwardattack'].xdriftamount
                 }},
-                8:{img:'crimfa2', callback:()=>{
+                8:{img:'crimfa2',repeatCall:true, callback:()=>{
                     let righthb = {
                         x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
                         y:this.y+5,
                         w:20,
                         h:40,
-                        kb:9
+                        kb:6
 
                     }
                     let lefthb = {
@@ -55,20 +57,21 @@ class Criminal extends GenericFighter{
                         y:this.y+5,
                         w:20,
                         h:40,
-                        kb:9
+                        kb:6
 
                     }
 
                     this.atkHitbox(this.facing=='right'?righthb:lefthb)
+                    this.velX += this.facing=='right'?this.anims['forwardattack'].xdriftamount:-this.anims['forwardattack'].xdriftamount
 
                 }},
-                16:{img:'crimfa3', callback:()=>{
+                16:{img:'crimfa3',repeatCall:true, callback:()=>{
                     let righthb = {
                         x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
                         y:this.y+this.hitboxOffset.y+(this.hitboxOffset.h/2)-5,
                         w:40,
                         h:20,
-                        kb:9
+                        kb:6
 
                     }
                     let lefthb = {
@@ -76,30 +79,33 @@ class Criminal extends GenericFighter{
                         y:this.y+this.hitboxOffset.y+(this.hitboxOffset.h/2)-5,
                         w:40,
                         h:20,
-                        kb:9
+                        kb:6
 
                     }
 
                     this.atkHitbox(this.facing=='right'?righthb:lefthb)
+                    this.velX += this.facing=='right'?this.anims['forwardattack'].xdriftamount:-this.anims['forwardattack'].xdriftamount
+
                 }},
-                24:{img:'crimfa4',callback:()=>{
+                24:{img:'crimfa4',repeatCall:true,callback:()=>{
 
                     let righthb = {
                         x:this.x+this.hitboxOffset.x+this.hitboxOffset.w+5,
                         y:this.y+this.hitboxOffset.y+this.hitboxOffset.h,
                         w:20,
                         h:40,
-                        kb:9
+                        kb:6
                     }
                     let lefthb = {
                         x:this.x+this.hitboxOffset.x-this.hitboxOffset.w+10,
                         y:this.y+this.hitboxOffset.y+this.hitboxOffset.h,
                         w:20,
                         h:40,
-                        kb:9
+                        kb:6
                     }
 
                     this.atkHitbox(this.facing=='right'?righthb:lefthb)
+                    this.velX += this.facing=='right'? this.anims['forwardattack'].xdriftamount:-this.anims['forwardattack'].xdriftamount
 
                     
                 }},
@@ -215,7 +221,9 @@ class Criminal extends GenericFighter{
                 }}
             },
             'upattack':{
-                0:{img:'crimup1'},
+                0:{img:'crimup1',callback:()=>{
+                    this.velY -= 10
+                }},
                 
                 4:{img:'crimup2'},
                 8:{img:'crimup3',callback:()=>{

@@ -4,6 +4,9 @@ class GenericFighter{
 
         this.kbmultiplier = 20
 
+        this.iframe = false
+        this.lif = 0
+
         this.jumpheight = jumpheight
 
         this.x=x
@@ -88,11 +91,16 @@ class GenericFighter{
     draw(){
         this.handleInputs()
         fill('black')
-        textSize(32)
         if (this.pnumber == 1){
+            textSize(32)
             text('Player 1: '+(this.kbmultiplier-20).toString(),100,100)
+            textSize(16)
+            text('1',this.x-10+this.w/2,this.y+10)
         }else{
+            textSize(32)
             text('Player 2: '+(this.kbmultiplier-20).toString(),400,100)
+            textSize(16)
+            text('2',this.x-10+this.w/2,this.y+10)
         }
         this.cf+=1
 
@@ -269,6 +277,11 @@ class GenericFighter{
             }
     
         }
+        if (this.iframe){
+            if (this.lif < this.cf){
+                this.iframe = false
+            }
+        }
     }
     animOver(){
         if (this.busy){
@@ -314,14 +327,17 @@ class GenericFighter{
             op=p1
         }
         if (collideRectRect(hitbox.x,hitbox.y,hitbox.w,hitbox.h,op.x+op.hitboxOffset.x,op.y+op.hitboxOffset.y,op.hitboxOffset.w,op.hitboxOffset.h)){
-            op.kbmultiplier += hitbox.kb
-            if (this.x <= op.x){
-                op.velX += 20 * (op.kbmultiplier/100)
-            }else{
-                op.velX -= 20 * (op.kbmultiplier/100)
+            if (!op.iframe){
+                op.kbmultiplier += hitbox.kb
+                if (this.x <= op.x){
+                    op.velX += 10 * (op.kbmultiplier/100)
+                }else{
+                    op.velX -= 10 * (op.kbmultiplier/100)
+                }
+                op.velY -= 2 * (op.kbmultiplier/100)
+                op.iframe = true
+                op.lif = this.cf
             }
-            op.velY -= 5 * (op.kbmultiplier/100)
-
         }
     }
 }
