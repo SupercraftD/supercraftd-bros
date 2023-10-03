@@ -92,15 +92,21 @@ class GenericFighter{
         this.handleInputs()
         fill('black')
         if (this.pnumber == 1){
+            push()
+            scale(1/zoom)
             textSize(32)
             text('Player 1: '+(this.kbmultiplier-20).toString(),100,100)
+            pop()
             textSize(16)
-            text('1',this.x-10+this.w/2,this.y+10)
+            text('1',(this.x-10+this.w/2)-cx,this.y+10-cy)
         }else{
+            push()
+            scale(1/zoom)
             textSize(32)
             text('Player 2: '+(this.kbmultiplier-20).toString(),400,100)
+            pop()
             textSize(16)
-            text('2',this.x-10+this.w/2,this.y+10)
+            text('2',(this.x-10+this.w/2)-cx,this.y+10-cy)
         }
         this.cf+=1
 
@@ -299,12 +305,11 @@ class GenericFighter{
                 this.f.callback()
             }    
         }
-
         if (this.facing=='right'){
-            image(frameImages[this.cimg],this.x,this.y,this.w,this.h)    
+            image(frameImages[this.cimg],this.x-cx,this.y-cy,this.w,this.h)    
         }else{
             push()
-            translate(this.x+this.w,this.y)
+            translate((this.x+this.w)-cx,this.y-cy)
             scale(-1,1)
             image(frameImages[this.cimg],this.flipOffset,0,this.w,this.h)
             pop()

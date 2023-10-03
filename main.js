@@ -14,8 +14,13 @@ bc=()=>{
 }};bc()
 */
 
+let cx = 0
+let cy = 0
+
 let p1
 let p2
+
+let winner
 
 let platforms=[{
         x:150,
@@ -35,6 +40,7 @@ let platforms=[{
     }
 ]
 
+let zoom = 1
 
 function setup(){
     createCanvas(720,640)
@@ -44,6 +50,7 @@ function setup(){
 function draw(){
     background(255)
     fill('black')
+
     if (!window.mode){
         textSize(30)
         text('Press left arrow for local mp, right arrow for online mp',100,100,500,100)
@@ -57,14 +64,24 @@ function draw(){
         }
 
     }else{
+        push()
+        scale(zoom)
         if (window.mode == 'local'){
+            cx = ((p1.x+p2.x)/2)-(360 * (1/zoom))
+            cy = ((p1.y+p2.y)/2)-(320 * (1/zoom))
+            
+            d = Math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2)
+            if (d > 600){
+                zoom = (600/d)
+            }
+
             fill('black')
             p1.draw()
             p2.draw()
             fill('black')
             for (let platform of platforms){
-                rect(platform.x,platform.y,platform.w,platform.h)
-            }    
+                rect(platform.x-cx,platform.y-cy,platform.w,platform.h)
+            }
         }else{
             if (!window.connectedServer){
                 text('Press any key, that key will be the id of the server you join (if it exists) or create (if its new)',
@@ -76,17 +93,25 @@ function draw(){
                             p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW)
                             p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0))                        
                         }
+                        cx = ((p1.x+p2.x)/2)-(360 * (1/zoom))
+                        cy = ((p1.y+p2.y)/2)-(320 * (1/zoom))
+                        
+                        d = Math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2)
+                        if (d > 600){
+                            zoom = (600/d)
+                        }
                         fill('black')
                         p1.draw()
                         p2.draw()
                         fill('black')
                         for (let platform of platforms){
-                            rect(platform.x,platform.y,platform.w,platform.h)
+                            rect(platform.x-cx,platform.y-cy,platform.w,platform.h)
                         }                
                     }
                 }
             }
         }
+        pop()
     }
 }
 
@@ -114,6 +139,7 @@ function keyPressed(){
 function reset(){
     p1 = undefined
     p2 = undefined
+    winner = undefined
     window.mode = undefined
     window.connectedServer = undefined
     window.serverData = undefined
@@ -123,4 +149,5 @@ function reset(){
     window.pos1 = undefined
     window.inputs2 = undefined
     window.pos2= undefined
+    zoom = 1
 }

@@ -400,6 +400,6 @@ class Criminal extends GenericFighter{
     draw(){
         super.draw()
         fill(0,0)
-        rect(this.x+this.hitboxOffset.x,this.y+this.hitboxOffset.y,this.hitboxOffset.w,this.hitboxOffset.h)
+        rect(this.x+this.hitboxOffset.x-cx,this.y+this.hitboxOffset.y-cy,this.hitboxOffset.w,this.hitboxOffset.h)
     }
 }
