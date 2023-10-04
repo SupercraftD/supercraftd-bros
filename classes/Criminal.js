@@ -1,6 +1,6 @@
 class Criminal extends GenericFighter{
-    constructor(x,y,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,downkeycode){
-        super(x,y,5,100,0.03,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,8,downkeycode)
+    constructor(x,y,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,downkeycode,bot){
+        super(x,y,5,100,0.03,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,8,downkeycode,bot)
         this.w=125
         this.h=125
 

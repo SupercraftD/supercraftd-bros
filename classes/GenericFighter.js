@@ -1,8 +1,10 @@
 class GenericFighter{
-    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber,jumpheight,downkeycode){
+    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber,jumpheight,downkeycode,bot){
         this.pnumber=pnumber
 
         this.kbmultiplier = 20
+
+        this.bot = bot
 
         this.iframe = false
         this.lif = 0
@@ -52,16 +54,81 @@ class GenericFighter{
     handleInputs(){
         let i=this.inputs
         if (window.mode=='local'){
-            i.left = keyIsDown(this.leftkeycode)
-            i.right = keyIsDown(this.rightkeycode)
-            i.jump = keyIsDown(this.jumpkeycode)
-            i.down = keyIsDown(this.downkeycode)
-            i.atk = keyIsDown(this.atkkeycode)
-            if (keyCode != this.atkkeycode){
-                i.lastkey = keyCode
+            if (!this.bot){
+                i.left = keyIsDown(this.leftkeycode)
+                i.right = keyIsDown(this.rightkeycode)
+                i.jump = keyIsDown(this.jumpkeycode)
+                i.down = keyIsDown(this.downkeycode)
+                i.atk = keyIsDown(this.atkkeycode)
+                if (keyCode != this.atkkeycode){
+                    i.lastkey = keyCode
+                }
+                this.inputs = i    
+            }else{
+                let op
+                if (this.pnumber == 1){
+                    op = p2
+                }else{
+                    op = p1
+                }
+
+                let dx = op.x-this.x
+                let dy = op.y-this.y
+                i.left = false
+                i.right = false
+
+                //if really far away, only move in the direction
+                if (dx < -100){
+                    i.left = true
+                    return
+                }
+                if (dx > 100){
+                    i.right = true
+                    return
+                }
+
+                if (dx < -10){
+                    if (!(dy<-50) && !(dy>50)){
+                        i.left = true
+                    }
+                }else if (dx > 10){
+                    if (!(dy<-50) && !(dy>50)){
+                        i.right = true
+                    }
+                }
+                
+                let canAttack = true
+                if (i.atk){
+                    i.atk = false
+                    canAttack = false
+                }
+                if (i.down){
+                    i.down = false
+                }
+                //console.log(dy)
+                if (i.jump){
+                    i.jump = false
+                }else{
+                    if (dy < -10 && this.velY >= 0 ){
+                        i.jump = true
+                    }
+                }
+                if (dy > 50){
+                    i.down = true
+                }    
+                
+                if (-10 <= dx <= 10){
+                    if (canAttack){
+                        if (dy < -50 && !i.jump){
+                            i.atk = false
+                        }else{
+                            i.atk = true
+                        }
+                    }
+                }
+
             }
-            this.inputs = i
-        }else{
+        }else {
             if (this.pnumber == window.pn){
                 i.left = keyIsDown(this.leftkeycode)
                 i.right = keyIsDown(this.rightkeycode)

@@ -53,7 +53,7 @@ function draw(){
 
     if (!window.mode){
         textSize(30)
-        text('Press left arrow for local mp, right arrow for online mp',100,100,500,100)
+        text('Press left arrow for local mp, right arrow for online mp, up arrow for against bot',100,100,500,500)
 
         if (keyIsDown(LEFT_ARROW)){
             window.mode = 'local'
@@ -61,6 +61,9 @@ function draw(){
         }else if (keyIsDown(RIGHT_ARROW)){
             window.mode = 'online'
             initOnline()
+        }else if (keyIsDown(UP_ARROW)){
+            window.mode = 'bot'
+            initLocal()
         }
 
     }else{
@@ -90,8 +93,8 @@ function draw(){
                 if (window.joined){
                     if (window.serverData.p2Available == false){
                         if (!p1){
-                            p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW)
-                            p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0))                        
+                            p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW,false)
+                            p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0),false)                        
                         }
                         cx = ((p1.x+p2.x)/2)-(360 * (1/zoom))
                         cy = ((p1.y+p2.y)/2)-(320 * (1/zoom))
@@ -117,8 +120,17 @@ function draw(){
 
 
 function initLocal(){
-    p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW)
-    p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0))
+    if (window.mode == 'bot'){
+        console.log('bot')
+        p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW,false)
+        p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0),true)
+        window.mode = 'local'    
+    }else{
+        console.log('local')
+        p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW,false)
+        p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0),false)
+        console.log(p2.bot)
+    }
 
 }
 
