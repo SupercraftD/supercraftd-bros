@@ -150,4 +150,7 @@ function reset(){
     window.inputs2 = undefined
     window.pos2= undefined
     zoom = 1
+    if (keyIsDown('S'.charCodeAt(0))){
+        window.clearServers()
+    }
 }

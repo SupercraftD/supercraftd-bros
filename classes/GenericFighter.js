@@ -73,17 +73,25 @@ class GenericFighter{
                 }
                 if (window.pn==1){
                     window.inputs1 = i
+                    window.kb1 = this.kbmultiplier
+                    window.facing1 = this.facing
                 }else{
                     window.inputs2 = i
+                    window.kb2 = this.kbmultiplier
+                    window.facing2 = this.facing
                 }
             }else{
                 if (window.pn==1){
                     i=window.inputs2
                     console.log(this.pnumber,i)
                     this.inputs = i
+                    this.facing = window.facing2
+                    this.kbmultiplier = window.kb2
                 }else{
                     i=window.inputs1
                     this.inputs = i
+                    this.facing = window.facing1
+                    this.kbmultiplier = window.kb1
                 }
             }
         }
