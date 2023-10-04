@@ -222,7 +222,9 @@ class Criminal extends GenericFighter{
             },
             'upattack':{
                 0:{img:'crimup1',callback:()=>{
-                    this.velY -= 10
+                    this.airdrift = true
+                    this.velY = -15
+                    this.g = 0
                 }},
                 
                 4:{img:'crimup2'},
@@ -361,6 +363,7 @@ class Criminal extends GenericFighter{
                 40:{img:'crimup11'},
                 44:{img:'crimup12',callback:()=>{
                     this.dbdelay=4
+                    this.airdrift = false
                     this.animOver()
                 }},
             },

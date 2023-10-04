@@ -227,6 +227,13 @@ class GenericFighter{
                 if (this.currentAnim != 'run'){
                     //run animation... when duncan finishes it
                 }
+            }else{
+                if (this.airdrift){
+                    this.facing = 'left'
+                    if (this.velX > -this.maxspeed){
+                        this.velX -= this.accel/2
+                    }
+                }
             }
         }
         if (this.inputs.right){
@@ -235,6 +242,13 @@ class GenericFighter{
                 if (this.velX<this.maxspeed){
                     this.velX+=this.accel
                 }    
+            }else{
+                if (this.airdrift){
+                    this.facing = 'right'
+                    if (this.velX < this.maxspeed){
+                        this.velX += this.accel/2
+                    }
+                }
             }
         }
 
