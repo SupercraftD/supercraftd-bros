@@ -364,6 +364,7 @@ class Criminal extends GenericFighter{
                 44:{img:'crimup12',callback:()=>{
                     this.dbdelay=4
                     this.airdrift = false
+                    this.freefall = true
                     this.animOver()
                 }},
             },

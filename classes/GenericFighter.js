@@ -6,8 +6,7 @@ class GenericFighter{
 
         this.bot = bot
 
-        this.iframe = false
-        this.lif = 0
+        this.iframe = 0
 
         this.jumpheight = jumpheight
 
@@ -23,6 +22,8 @@ class GenericFighter{
         this.currentAnim = 'idle'
         this.currentFrame = 0
         this.busy=false
+
+        this.freefall = false
 
         this.dbdelay = 0
 
@@ -165,6 +166,9 @@ class GenericFighter{
     }
     draw(){
         this.handleInputs()
+        if (this.iframe > 0){
+            this.iframe -= 1
+        }
         fill('black')
         if (this.pnumber == 1){
             push()
@@ -257,6 +261,7 @@ class GenericFighter{
             this.doublejumps = 0
             this.g = 0
             this.velY = 0
+            this.freefall = false
             if (this.inputs.jump){
                 if (!this.busy && !this.jumpheldlast){
                     this.velY -= this.jumpheight
@@ -287,7 +292,7 @@ class GenericFighter{
 
         //comma attack
         if (this.inputs.atk){
-            if (!this.atkheldlast){
+            if (!this.atkheldlast && !this.freefall){
                 this.atkheldlast = true
                 //initiate attack
 
@@ -421,7 +426,7 @@ class GenericFighter{
             op=p1
         }
         if (collideRectRect(hitbox.x,hitbox.y,hitbox.w,hitbox.h,op.x+op.hitboxOffset.x,op.y+op.hitboxOffset.y,op.hitboxOffset.w,op.hitboxOffset.h)){
-            if (!op.iframe){
+            if (op.iframe == 0){
                 op.kbmultiplier += hitbox.kb
                 if (this.x <= op.x){
                     op.velX += 10 * (op.kbmultiplier/100)
@@ -429,8 +434,7 @@ class GenericFighter{
                     op.velX -= 10 * (op.kbmultiplier/100)
                 }
                 op.velY -= 2 * (op.kbmultiplier/100)
-                op.iframe = true
-                op.lif = this.cf
+                op.iframe = 5
             }
         }
     }

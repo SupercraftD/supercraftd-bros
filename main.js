@@ -23,9 +23,9 @@ let p2
 let winner
 
 let platforms=[{
-        x:150,
+        x:50,
         y:550,
-        w:400,
+        w:600,
         h:60
     },{
         x:50,
