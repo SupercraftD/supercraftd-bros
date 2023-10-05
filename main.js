@@ -53,7 +53,7 @@ function draw(){
 
     if (!window.mode){
         textSize(30)
-        text('Press left arrow for local mp, right arrow for online mp, up arrow for against bot',100,100,500,500)
+        text('Press left arrow for local mp, right arrow for online mp, up arrow for against bot, down arrow for bot vs bot',100,100,500,500)
 
         if (keyIsDown(LEFT_ARROW)){
             window.mode = 'local'
@@ -63,6 +63,9 @@ function draw(){
             initOnline()
         }else if (keyIsDown(UP_ARROW)){
             window.mode = 'bot'
+            initLocal()
+        }else if (keyIsDown(DOWN_ARROW)){
+            window.mode = '2bot'
             initLocal()
         }
 
@@ -125,6 +128,11 @@ function initLocal(){
         p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW,false)
         p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0),true)
         window.mode = 'local'    
+    }else if (window.mode=='2bot'){
+        console.log('2bot')
+        p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW,true)
+        p2=new Criminal(300,0,'F'.charCodeAt(0),'A'.charCodeAt(0),'D'.charCodeAt(0),'W'.charCodeAt(0),2,'S'.charCodeAt(0),true)
+        window.mode = 'local'
     }else{
         console.log('local')
         p1=new Criminal(100,0,188,LEFT_ARROW,RIGHT_ARROW,UP_ARROW,1,DOWN_ARROW,false)
