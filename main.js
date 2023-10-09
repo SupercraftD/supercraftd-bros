@@ -56,7 +56,11 @@ function setup(){
     serverButton.hide()
 }
 let selector = 0
-let selectorsY = [200,300,400,500]
+let selectorsY = {
+    200:"Local mode: play with 2 players on one computer. p1: arrow keys, comma, and period. p2: WASD, F, and G",
+    300:"Online mode: play online. Host (p1): arrow keys, comma, and period. Other player (p2): WASD, F, and G",
+    400:"Player vs Bot mode: play against a bot. Player (p1): arrow keys, comma, and period",
+    500:"Bot vs Bot mode: watch two bots play each other. No controls."}
 let rightDownLast = false
 let leftDownLast = false
 
@@ -73,13 +77,15 @@ function draw(){
         text('Online',100,300)
         text('Player vs Bot',100,400)
         text('Bot vs Bot',100,500)
-        rect(60,selectorsY[selector]-25,25,25)
+        rect(60,200+(100*selector)-25,25,25)
 
+        text(selectorsY[200+(100*selector)],300,100,300,500)
+        text('Enter or Space to select', 300,600)
         if (keyIsDown(RIGHT_ARROW) || keyIsDown(DOWN_ARROW)){
             if (!rightDownLast){
                 rightDownLast = true
                 selector += 1
-                if (selector >= selectorsY.length){
+                if (selector >= Object.keys(selectorsY).length){
                     selector = 0
                 }
             }
@@ -92,7 +98,7 @@ function draw(){
                 leftDownLast = true
                 selector -= 1
                 if (selector < 0){
-                    selector = selectorsY.length - 1
+                    selector = Object.keys(selectorsY).length-1
                 }
             }
         }else{
