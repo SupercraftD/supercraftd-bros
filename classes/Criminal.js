@@ -394,6 +394,7 @@ class Criminal extends GenericFighter{
                     this.atkHitbox(hb)
 
                     this.velY += 1
+                    this.velX = 0
                     if (this.onFloor){
                         this.dbdelay = 8
                         this.animOver()
