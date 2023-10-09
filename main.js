@@ -99,7 +99,7 @@ function draw(){
             leftDownLast = false
         }
 
-        if (keyIsDown(ENTER) || keyIsDown(32)/*space*/){
+        if (keyIsDown(ENTER) || keyIsDown(32)/*space*/ || keyIsDown(188) /*comma*/){
             switch (selector){
                 case 0:
                     window.mode='local'

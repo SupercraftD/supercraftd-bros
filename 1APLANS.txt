@@ -1,6 +1,6 @@
 hopefully this file while help me remember what i was planning to do short-term wise
 
 
-
-
+-let bot use specials
+-add win condition
 -polish gui (part 2)
