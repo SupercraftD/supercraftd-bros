@@ -63,6 +63,7 @@ window.joinServer = function(){
                 right:false,
                 down:false,
                 atk:false,
+                special:false,
                 lastkey:0
             },
             p2Pos:{x:0,y:0},

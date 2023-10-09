@@ -1,8 +1,10 @@
 class Criminal extends GenericFighter{
-    constructor(x,y,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,downkeycode,bot){
-        super(x,y,5,100,0.03,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,8,downkeycode,bot)
+    constructor(x,y,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,downkeycode,bot,specialkeycode){
+        super(x,y,5,100,0.03,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pn,8,downkeycode,bot,specialkeycode)
         this.w=125
         this.h=125
+
+        this.ghosts = []
 
         this.hitboxOffset={
             x:40,
@@ -407,6 +409,26 @@ class Criminal extends GenericFighter{
                 32:{img:'crimwalk4',callback:()=>{
                     this.animOver()
                 }},
+            },
+            'special':{
+                0:{img:'crimidle1',callback:()=>{
+                    this.velY = 0
+                    if (this.facing=='right'){
+                        this.velX = 100
+                    }else{
+                        this.velX = -100
+                    }
+                }},
+                1:{img:'crimidle1',repeatCall:true,callback:()=>{
+                    this.ghosts.push({x:this.x,y:this.y,time:12,facing:this.facing})
+                }},
+                4:{img:'crimidle1',callback:()=>{
+                    this.velX = 0
+                    this.velY = 0
+                }},
+                16:{img:'crimidle1',callback:()=>{
+                    this.animOver()
+                }}
             }
         }
     }
@@ -414,5 +436,21 @@ class Criminal extends GenericFighter{
         super.draw()
         fill(0,0)
         rect(this.x+this.hitboxOffset.x-cx,this.y+this.hitboxOffset.y-cy,this.hitboxOffset.w,this.hitboxOffset.h)
+        for (let ghost of this.ghosts){
+            tint(255,127 * (ghost.time/12))
+            if (ghost.facing=='right'){
+                image(frameImages.crimidle1,ghost.x-cx,ghost.y-cy,this.w,this.h)    
+            }else{
+                push()
+                translate((ghost.x+this.w)-cx,ghost.y-cy)
+                scale(-1,1)
+                image(frameImages.crimidle1,this.flipOffset,0,this.w,this.h)    
+                pop()
+            }
+                ghost.time -= 1
+            if (ghost.time==0){
+                this.ghosts.splice(this.ghosts.indexOf(ghost),1)
+            }
+        }
     }
 }

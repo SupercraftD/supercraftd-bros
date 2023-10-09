@@ -1,5 +1,5 @@
 class GenericFighter{
-    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber,jumpheight,downkeycode,bot){
+    constructor(x,y,accel,maxspeed,mass,atkkeycode,leftkeycode,rightkeycode,jumpkeycode,pnumber,jumpheight,downkeycode,bot,specialkeycode){
         this.pnumber=pnumber
 
         this.kbmultiplier = 20
@@ -36,12 +36,15 @@ class GenericFighter{
         this.rightkeycode = rightkeycode
         this.jumpkeycode = jumpkeycode
         this.downkeycode = downkeycode
+        this.specialkeycode = specialkeycode
 
         this.lastkey
 
         this.cimg
 
         this.atkheldlast = false
+        this.specialheldlast = false
+
         this.latk = 0
         this.cf = 0
 
@@ -61,7 +64,8 @@ class GenericFighter{
                 i.jump = keyIsDown(this.jumpkeycode)
                 i.down = keyIsDown(this.downkeycode)
                 i.atk = keyIsDown(this.atkkeycode)
-                if (keyCode != this.atkkeycode){
+                i.special = keyIsDown(this.specialkeycode)
+                if (keyCode != this.atkkeycode && keyCode != this.specialkeycode){
                     i.lastkey = keyCode
                 }
                 this.inputs = i    
@@ -77,7 +81,7 @@ class GenericFighter{
                 let dy = op.y-this.y
                 i.left = false
                 i.right = false
-
+                i.special = false
                 //if really far away, only move in the direction
                 if (dx < -100){
                     i.left = true
@@ -136,7 +140,8 @@ class GenericFighter{
                 i.jump = keyIsDown(this.jumpkeycode)
                 i.down = keyIsDown(this.downkeycode)
                 i.atk = keyIsDown(this.atkkeycode)
-                if (keyCode != this.atkkeycode){
+                i.special = keyIsDown(this.specialkeycode)
+                if (keyCode != this.atkkeycode && keyCode != this.specialkeycode){
                     i.lastkey = keyCode
                 }
                 if (window.pn==1){
@@ -362,6 +367,19 @@ class GenericFighter{
         }else{
             this.atkheldlast = false
         }
+        if (this.inputs.special){
+            if (!this.specialheldlast){
+                this.specialheldlast = true
+                if (!this.busy){
+                    this.currentAnim = 'special'
+                    this.currentFrame = 0
+                    this.busy = true
+                }
+            }
+        }else{
+            this.specialheldlast = false
+        }
+
         this.frame()
         if (window.mode == 'online'){
             if (this.pnumber == window.pn){
@@ -388,11 +406,6 @@ class GenericFighter{
             }
     
         }
-        if (this.iframe){
-            if (this.lif < this.cf){
-                this.iframe = false
-            }
-        }
     }
     animOver(){
         if (this.busy){
@@ -403,6 +416,7 @@ class GenericFighter{
         this.currentAnim = 'idle'
     }
     frame(){
+        tint(255,255)
         if (this.currentFrame in this.anims[this.currentAnim]){
             this.f = this.anims[this.currentAnim][this.currentFrame]
             this.cimg = this.f.img
