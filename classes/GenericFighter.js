@@ -492,16 +492,16 @@ class GenericFighter{
         cameraShaking = true
         console.log('died')
         this.stock -= 1
-        p1.x = 100
-        p1.y = 0
-        p1.velX = 0
-        p1.velY = 0
-        p2.x = 300
-        p2.y = 0
-        p2.velX = 0
-        p2.velY = 0
-        p1.kbmultiplier = 20
-        p2.kbmultiplier = 20
+
+        this.x = 200
+        this.y = 0
+        this.velX = 0
+        this.velY = 0
+        this.kbmultiplier = 20
+
+        this.currentAnim = 'idle'
+        this.currentFrame = 0
+        this.busy = false
 
         if (this.stock <= 0){
             if (this.pnumber == 1){
