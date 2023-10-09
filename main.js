@@ -17,6 +17,38 @@ bc=()=>{
 let cx = 0
 let cy = 0
 
+let ecx = 0
+let ecy = 0
+
+let cameraShaking = false
+let cameraShakes = []
+let camShakeDuration = 10
+function camShake(){
+    if (cameraShakes.length > camShakeDuration){
+        cameraShaking = false
+    }
+    if (cameraShaking){
+        let dx = 5+Math.random()*2
+        let dy = 5+Math.random()*2
+
+        ecx += dx 
+        ecy += dy
+
+        cameraShakes.push([dx,dy])
+    }else{
+        if (cameraShakes.length > 0){
+            let s = cameraShakes.pop()
+
+            ecx -= s[0]
+            ecy -= s[1]
+        }else{
+            ecx = 0
+            ecy = 0
+        }
+    }
+}
+
+
 let p1
 let p2
 
@@ -64,12 +96,14 @@ let selectorsY = {
 let rightDownLast = false
 let leftDownLast = false
 
+let gameOver = false
+
 function draw(){
     background(255)
     fill('black')
     serverInput.hide()
     serverButton.hide()
-
+    camShake()
     if (!window.mode){
         textSize(30)
         //text('Press left arrow for local mp, right arrow for online mp, up arrow for against bot, down arrow for bot vs bot',100,100,500,500)
@@ -145,12 +179,17 @@ function draw(){
         if (window.mode == 'local'){
             cx = ((p1.x+p2.x)/2)-(360 * (1/zoom))
             cy = ((p1.y+p2.y)/2)-(320 * (1/zoom))
-            
+
+            cx += ecx
+            cy += ecy
+
             d = Math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2)
             if (d > 600){
                 zoom = (600/d)
+            }else{
+                zoom = 1
             }
-
+            //console.log(window.mode)
             fill('black')
             p1.draw()
             p2.draw()
@@ -177,10 +216,14 @@ function draw(){
                         }
                         cx = ((p1.x+p2.x)/2)-(360 * (1/zoom))
                         cy = ((p1.y+p2.y)/2)-(320 * (1/zoom))
+                        cx += ecx
+                        cy += ecy
                         
                         d = Math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2)
                         if (d > 600){
                             zoom = (600/d)
+                        }else{
+                            zoom = 1
                         }
                         fill('black')
                         p1.draw()
@@ -194,6 +237,10 @@ function draw(){
             }
         }
         pop()
+    }
+    if (gameOver){
+        reset()
+        gameOver = false
     }
 }
 

@@ -10,6 +10,10 @@ class GenericFighter{
 
         this.jumpheight = jumpheight
 
+        this.maxStock = 3
+        this.stock = this.maxStock
+    
+
         this.x=x
         this.y=y
         this.velX = 0
@@ -180,6 +184,14 @@ class GenericFighter{
             scale(1/zoom)
             textSize(32)
             text('Player 1: '+(this.kbmultiplier-20).toString(),100,100)
+            for (let i=1;i<this.maxStock+1;i++){
+                if (i <= this.stock){
+                    fill('black')
+                }else{
+                    fill('white')
+                }
+                ellipse(100+(30*i),120,20,20)
+            }
             pop()
             textSize(16)
             text('1',(this.x-10+this.w/2)-cx,this.y+10-cy)
@@ -188,6 +200,15 @@ class GenericFighter{
             scale(1/zoom)
             textSize(32)
             text('Player 2: '+(this.kbmultiplier-20).toString(),400,100)
+            for (let i=1;i<this.maxStock+1;i++){
+                if (i <= this.stock){
+                    fill('black')
+                }else{
+                    fill('white')
+                }
+                ellipse(400+(30*i),120,20,20)
+            }
+
             pop()
             textSize(16)
             text('2',(this.x-10+this.w/2)-cx,this.y+10-cy)
@@ -380,6 +401,10 @@ class GenericFighter{
             this.specialheldlast = false
         }
 
+        if (this.y > 2000){
+            this.die()
+        }
+
         this.frame()
         if (window.mode == 'online'){
             if (this.pnumber == window.pn){
@@ -461,6 +486,30 @@ class GenericFighter{
                 op.velY = -2 * (op.kbmultiplier/100)
                 op.iframe = 5
             }
+        }
+    }
+    die(){
+        cameraShaking = true
+        console.log('died')
+        this.stock -= 1
+        p1.x = 100
+        p1.y = 0
+        p1.velX = 0
+        p1.velY = 0
+        p2.x = 300
+        p2.y = 0
+        p2.velX = 0
+        p2.velY = 0
+        p1.kbmultiplier = 20
+        p2.kbmultiplier = 20
+
+        if (this.stock <= 0){
+            if (this.pnumber == 1){
+                alert('p2 won')
+            }else{
+                alert('p1 won')
+            }
+            gameOver = true
         }
     }
 }
