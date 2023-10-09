@@ -42,32 +42,96 @@ let platforms=[{
 
 let zoom = 1
 
+let serverInput
+let serverButton
+
 function setup(){
     createCanvas(720,640)
     noSmooth()
-
+    serverInput = createInput()
+    serverInput.position(200,300)
+    serverButton = createButton('Go')
+    serverButton.position(400,300)
+    serverInput.hide()
+    serverButton.hide()
 }
+let selector = 0
+let selectorsY = [200,300,400,500]
+let rightDownLast = false
+let leftDownLast = false
+
 function draw(){
     background(255)
     fill('black')
+    serverInput.hide()
+    serverButton.hide()
 
     if (!window.mode){
         textSize(30)
-        text('Press left arrow for local mp, right arrow for online mp, up arrow for against bot, down arrow for bot vs bot',100,100,500,500)
+        //text('Press left arrow for local mp, right arrow for online mp, up arrow for against bot, down arrow for bot vs bot',100,100,500,500)
+        text('Local',100,200)
+        text('Online',100,300)
+        text('Player vs Bot',100,400)
+        text('Bot vs Bot',100,500)
+        rect(60,selectorsY[selector]-25,25,25)
 
-        if (keyIsDown(LEFT_ARROW)){
-            window.mode = 'local'
-            initLocal()
-        }else if (keyIsDown(RIGHT_ARROW)){
-            window.mode = 'online'
-            initOnline()
-        }else if (keyIsDown(UP_ARROW)){
-            window.mode = 'bot'
-            initLocal()
-        }else if (keyIsDown(DOWN_ARROW)){
-            window.mode = '2bot'
-            initLocal()
+        if (keyIsDown(RIGHT_ARROW) || keyIsDown(DOWN_ARROW)){
+            if (!rightDownLast){
+                rightDownLast = true
+                selector += 1
+                if (selector >= selectorsY.length){
+                    selector = 0
+                }
+            }
+        }else{
+            rightDownLast = false
         }
+
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(UP_ARROW)){
+            if (!leftDownLast){
+                leftDownLast = true
+                selector -= 1
+                if (selector < 0){
+                    selector = selectorsY.length - 1
+                }
+            }
+        }else{
+            leftDownLast = false
+        }
+
+        if (keyIsDown(ENTER) || keyIsDown(32)/*space*/){
+            switch (selector){
+                case 0:
+                    window.mode='local'
+                    initLocal()
+                    break
+                case 1:
+                    window.mode = 'online'
+                    initOnline()
+                    break
+                case 2:
+                    window.mode = 'bot'
+                    initLocal()
+                    break
+                case 3:
+                    window.mode = '2bot'
+                    initLocal()
+                    break
+            }
+        }
+        // if (keyIsDown(LEFT_ARROW)){
+        //     window.mode = 'local'
+        //     initLocal()
+        // }else if (keyIsDown(RIGHT_ARROW)){
+        //     window.mode = 'online'
+        //     initOnline()
+        // }else if (keyIsDown(UP_ARROW)){
+        //     window.mode = 'bot'
+        //     initLocal()
+        // }else if (keyIsDown(DOWN_ARROW)){
+        //     window.mode = '2bot'
+        //     initLocal()
+        // }
 
     }else{
         push()
@@ -90,8 +154,14 @@ function draw(){
             }
         }else{
             if (!window.connectedServer){
-                text('Press any key, that key will be the id of the server you join (if it exists) or create (if its new)',
+                serverInput.show()
+                serverButton.show()
+                text('Type the server ID (will be created if new)',
                     100,100,600,400)
+                serverButton.mousePressed(()=>{
+                    window.connectedServer =serverInput.value()
+                    window.joinServer()
+                })
             }else{
                 if (window.joined){
                     if (window.serverData.p2Available == false){
@@ -146,10 +216,10 @@ function initOnline(){
     
 }
 function keyPressed(){
-    if (window.mode == 'online' && !window.connectedServer){
-        window.connectedServer = keyCode
-        window.joinServer()
-    }
+    // if (window.mode == 'online' && !window.connectedServer){
+    //     window.connectedServer = keyCode
+    //     window.joinServer()
+    // }
     if (key == 'r'){
         //hard and unsafe reset
         reset()
