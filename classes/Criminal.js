@@ -398,6 +398,15 @@ class Criminal extends GenericFighter{
                     }
                 }},
                 
+            },
+            'walk':{
+                0:{img:'crimwalk1'},
+                8:{img:'crimwalk2'},
+                16:{img:'crimwalk3'},
+                24:{img:'crimwalk4'},
+                32:{img:'crimwalk4',callback:()=>{
+                    this.animOver()
+                }},
             }
         }
     }

@@ -228,8 +228,9 @@ class GenericFighter{
                 if (this.velX > -this.maxspeed){
                     this.velX -= this.accel
                 }
-                if (this.currentAnim != 'run'){
-                    //run animation... when duncan finishes it
+                if (this.currentAnim != 'walk'){
+                    this.currentAnim = 'walk'
+                    this.currentFrame = 0
                 }
             }else{
                 if (this.airdrift){
@@ -245,7 +246,11 @@ class GenericFighter{
                 this.facing = 'right'
                 if (this.velX<this.maxspeed){
                     this.velX+=this.accel
-                }    
+                }
+                if (this.currentAnim != 'walk'){
+                    this.currentAnim = 'walk'
+                    this.currentFrame = 0
+                }
             }else{
                 if (this.airdrift){
                     this.facing = 'right'
@@ -253,6 +258,12 @@ class GenericFighter{
                         this.velX += this.accel/2
                     }
                 }
+            }
+        }
+        if (!(this.inputs.left || this.inputs.right)){
+            if (this.currentAnim == 'walk'){
+                this.currentAnim = 'idle'
+                this.currentFrame = 0
             }
         }
 
@@ -429,11 +440,11 @@ class GenericFighter{
             if (op.iframe == 0){
                 op.kbmultiplier += hitbox.kb
                 if (this.x <= op.x){
-                    op.velX += 10 * (op.kbmultiplier/100)
+                    op.velX = 10 * (op.kbmultiplier/100)
                 }else{
-                    op.velX -= 10 * (op.kbmultiplier/100)
+                    op.velX = -10 * (op.kbmultiplier/100)
                 }
-                op.velY -= 2 * (op.kbmultiplier/100)
+                op.velY = -2 * (op.kbmultiplier/100)
                 op.iframe = 5
             }
         }

@@ -1,6 +1,5 @@
 hopefully this file while help me remember what i was planning to do short-term wise
 
 -make a better menu and gui
--tweak knockback and iframes
 -add special attack/animations
 --crim's is gonna be a horizontal tp/dash

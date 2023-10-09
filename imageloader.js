@@ -45,6 +45,10 @@ function preload(){
         {'name':'crimdown11','path':'images/crim/downattack/sprite_10.png'},
         {'name':'crimdown12','path':'images/crim/downattack/sprite_11.png'},
         {'name':'crimdown13','path':'images/crim/downattack/sprite_12.png'},
+        {'name':'crimwalk1','path':'images/crim/walk/sprite_0.png'},
+        {'name':'crimwalk2','path':'images/crim/walk/sprite_1.png'},
+        {'name':'crimwalk3','path':'images/crim/walk/sprite_2.png'},
+        {'name':'crimwalk4','path':'images/crim/walk/sprite_3.png'},
 
 
 
