@@ -2,5 +2,5 @@ hopefully this file while help me remember what i was planning to do short-term 
 
 
 -let bot use specials
--add win condition
+--make bot better in general (not walk off map)
 -polish gui (part 2)
