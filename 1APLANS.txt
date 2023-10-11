@@ -2,7 +2,6 @@ hopefully this file while help me remember what i was planning to do short-term 
 
 
 -let bot use specials
---make bot better in general (not walk off map)
 -add end screen with stats
 -add new characters and character select
 -keep fixing knockback and velocity

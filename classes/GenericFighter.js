@@ -87,11 +87,11 @@ class GenericFighter{
                 i.right = false
                 i.special = false
                 //if really far away, only move in the direction
-                if (dx < -100){
+                if (dx < -100 && op.overPlat()){
                     i.left = true
                     return
                 }
-                if (dx > 100){
+                if (dx > 100 && op.overPlat()){
                     i.right = true
                     return
                 }
@@ -136,6 +136,13 @@ class GenericFighter{
                     }
                 }
 
+                if (i.left || i.right){
+                    if (!op.overPlat()){
+                        i.left = false
+                        i.right = false
+                    }
+                }
+
             }
         }else {
             if (this.pnumber == window.pn){
@@ -172,6 +179,14 @@ class GenericFighter{
                 }
             }
         }
+    }
+    overPlat(){
+        for (let plat of platforms){
+            if (collideRectRect(this.x+this.hitboxOffset.x,this.y+this.hitboxOffset.y+this.hitboxOffset.h,this.hitboxOffset.w,1000000000,plat.x,plat.y,plat.w,plat.h)){
+                return true
+            }
+        }
+        return false
     }
     draw(){
         this.handleInputs()
